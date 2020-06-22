@@ -34,6 +34,10 @@
         (ngModelChange)="ponerLetra()" class="form-control col-2" type="text" />
     </div>
     <div class="col-md-12">
+      <button type="button" class="btn btn-primary " style="margin-bottom: 10px; width: 30%; margin-left: 20px;"
+        (click)="palabrAleatoria()">
+        Iniciar Juego
+      </button>
       <button type="button" class="btn btn-primary" style="margin-left:200px ;margin-bottom: 10px; width: 30%;"
         (click)="iniciarJuego()">
         Reiniciar el juego
@@ -42,6 +46,11 @@
         (click)="palabrAleatoria()">
         Obtener palabra aleatoria
       </button>
+      <br>
+      <div id="espanol">
+        <label >Se debe ir probando letra por letra hasta obtener la correcta, modalidad de ahorcado</label>
+      </div>
+
     </div>
 
 
