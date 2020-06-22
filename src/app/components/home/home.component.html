@@ -1,0 +1,110 @@
+<br />
+<div class="container">
+  <div class="card a1">
+    <h2 class="a2">Envio de Mensaje</h2>
+    <br />
+    <form #formMensaje="ngForm" (ngSubmit)="onSubmit(formMensaje)">
+      <div class="formgroup row col-md-12 col-sm-12">
+        <div style="width: 30%;">
+          <label style="padding-left: 40%;"> Para :</label>
+        </div>
+        <input style="width: 50%;" type="string" class="form-control" name="txtPara" #txtPara="ngModel"
+          [(ngModel)]="mensaje.para" required placeholder="Escribe el numero de telefono del destinatario" (keypress)="numberOnly($event)" />
+        <div *ngIf="txtPara.invalid && (txtPara.dirty || txtPara.touched)" class="alertalert-danger">
+
+          <div *ngIf="txtPara.errors.required" style=" margin-left: 70px;">
+            Numero del receptor es requerido.
+          </div>
+
+
+        </div>
+
+
+
+      </div>
+      <div class="formgroup row col-md-12 col-sm-12">
+        <div style="width: 30%;">
+          <label style="padding-left: 40%;"> Empresa :</label>
+        </div>
+        <select class="custom-select form-control" style="width: 50%;" name="idempresa" #idempresa="ngModel"
+          [(ngModel)]="mensaje.empresa" required>
+          <option *ngFor="let item of empresas" [ngValue]="item">{{item.nombre}}</option>
+
+        </select>
+      </div>
+
+      <div class="formgroup row col-md-12" style="margin-top: 5px;">
+        <div style="width: 30%;">
+          <label style="padding-left: 40%;"> De :</label>
+        </div>
+        <input style="width: 50%;" type="string" class="form-control" name="txtDesde" #txtDesde="ngModel"
+          [(ngModel)]="mensaje.desde" required placeholder="Escribe tu numero de telefono" (keypress)="numberOnly($event)"/>
+        <div *ngIf="txtDesde.invalid && (txtDesde.dirty || txtDesde.touched)" class="alertalert-danger">
+
+          <div *ngIf="txtDesde.errors.required" style=" margin-left: 70px;">
+            Numero del emisor es requerido.
+          </div>
+
+
+        </div>
+      </div>
+
+      <div class="form-group row col-md-12" style="margin-top: 5px;">
+        <label style="padding-left: 30%;">Envia tu mensaje</label>
+        <label style="color: rgb(102, 102, 102); padding-left: 140px;">Longitud del texto escrito :{{ tamTex }}</label>
+        <textarea class="form-control" name="txtTexto" #txtTexto="ngModel" [maxlength]="tamMaxTex" rows="5"
+          style="width: 70%; margin-left: 30%;" [(ngModel)]="mensaje.texto" required
+          (ngModelChange)="cambiarTamTexto()" placeholder="Escribe tu mensaje"></textarea>
+
+        <div *ngIf="txtTexto.invalid && (txtTexto.dirty || txtTexto.touched)" class="alertalert-danger">
+
+          <div *ngIf="txtTexto.errors.required" style=" margin-left: 70px;">
+            Mensaje es requerido.
+          </div>
+
+
+        </div>
+      </div>
+      <div class="row" style="margin-left: 10px;">
+        <button data-toggle="modal" href="#modal" type="submit" class="b2"
+          style="margin-bottom: 10px; margin-left: 50%;" (click)="enviarMensaje()" [disabled]="formMensaje.invalid">
+          Enviar
+        </button>
+        <input type="reset" class="b2" style="margin-bottom: 10px; margin-left: 20px;" value="limpiar" />
+      </div>
+    </form>
+  </div>
+  <div class="modal" tabindex="-1" role="dialog" id="modal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content a1">
+        <div class="modal-header" style="border-color: yellowgreen;">
+          <h5 class="a2">Modal title</h5>
+          <button style="background-color: rgb(44, 44, 255);" type="button" class="close" data-dismiss="modal"
+            aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" style="border-color: yellowgreen;">
+          <div class="row">
+            <label style="padding-left: 30%;"> De:</label>
+            <label style="padding-left: 25px;">{{ mensaje.desde }}</label>
+          </div>
+          <div class="row">
+            <label style="padding-left: 30%;"> Para:</label>
+            <label style="padding-left: 15px;">{{ mensaje.para }}</label>
+          </div>
+          <div class="row">
+            <label style="padding-left: 30%;"> De:</label>
+            <label style="padding-left: 25px;">{{ mensaje.texto }}</label>
+          </div>
+        </div>
+        <div class="modal-footer" style="border-color: yellowgreen;">
+          <button type="button" class="btn btn-primary">Guardar</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Cerrar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

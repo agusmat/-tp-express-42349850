@@ -1,0 +1,232 @@
+<br />
+<div class="container">
+  <div class="card a1">
+    <h2 class="a2">Compra tus Pasajes</h2>
+
+    <form #formPasaje="ngForm" (ngSubmit)="onSubmit(formPasaje)">
+      <div class="formgroup row col-md-12">
+        <div style="width: 30%;">
+          <label style="padding-left: 40%;">Dni Pasajero:</label>
+        </div>
+        <input style="width: 50%;" type="number" class="form-control" name="txtDni" #txtDni="ngModel"
+          [(ngModel)]="pasaje.dniPasajero" required minlength="8" />
+
+        <div *ngIf="txtDni.invalid && (txtDni.dirty || txtDni.touched)" class="alertalert-danger">
+
+          <div *ngIf="txtDni.errors.required" style=" margin-left: 70px;">
+            Dni es requerido.
+          </div>
+
+          <div *ngIf="txtDni.errors.minlength" style=" margin-left: 70px;">
+            el Dni debe tener al menos 8 caracteres.
+          </div>
+        </div>
+      </div>
+      <div class="formgroup row col-md-12" style="margin-top: 5px;">
+        <div style="width: 30%;">
+          <label style="padding-left: 40%;"> Precio del Pasaje :</label>
+        </div>
+        <input style="width: 50%;" type="number" class="form-control" name="prec" #prec="ngModel"
+          [(ngModel)]="pasaje.precioPasaje " (ngModelChange)="pasaje.precioPasaje=$event" (click)="cambio()" required />
+        <div *ngIf="prec.invalid && (prec.dirty || prec.touched)" class="alertalert-danger">
+
+          <div *ngIf="prec.errors.required" style=" margin-left: 70px;">
+            Precio es requerido.
+          </div>
+
+
+        </div>
+      </div>
+      <div class="formgroup row col-md-12" style="margin-top: 5px;">
+        <div style="width: 30%;">
+          <label style="padding-left: 40%;"> Categoria :</label>
+        </div>
+
+        <select style="width: 50%;" class="custom-select form-control" name="categ" #categ="ngModel"
+          [(ngModel)]="pasaje.categoriaPasajero" (click)="cambio()">
+          <option value="Menor">Menor</option>
+          <option value="Jubilado">Jubilado</option>
+          <option value="Adulto">Adulto</option>
+        </select>
+        <div *ngIf="categ.invalid && (categ.dirty || categ.touched)" class="alertalert-danger">
+
+          <div *ngIf="categ.errors.required" style=" margin-left: 70px;">
+            Categoria es requerido.
+          </div>
+
+
+        </div>
+      </div>
+      <div class="formgroup row col-md-12" style="margin-top: 5px;">
+        <div style="width: 30%;">
+          <label style="padding-left: 40%;"> Fecha del pasaje :</label>
+        </div>
+
+        <input style="width: 50%;" type="text" placeholder="Datepicker" class="form-control" name="dtFec"
+          #dtFec="ngModel" [(ngModel)]="pasaje.fechaCompra " bsDatepicker />
+      </div>
+      <div class="formgroup row col-md-12" style="margin-top: 5px;">
+        <div style="width: 30%;">
+          <label style="padding-left: 40%;"> Precio final :</label>
+        </div>
+        <label style="
+            width: 50%;
+            padding-left: 230px;
+
+            margin-bottom: 30px;
+            height: 30px;
+            border-color: white;
+            background-color: white;
+          " *ngIf="this.pasaje.categoriaPasajero != ' ' && this.pasaje.precioPasaje > 0">
+          {{ pasaje.final }}</label>
+      </div>
+
+      <div class="row col-sm-12" style="padding-left: 150px;">
+        <button type="submit" class="b2" style="margin-bottom: 10px; width: 30%;" (click)="enviarPasaje()"
+          [disabled]="formPasaje.invalid ">
+          Registrar
+        </button>
+        <button type="submit" class="b2" style="margin-bottom: 10px; width: 30%;" (click)="modificarPasaje()">
+          Modificar
+        </button>
+        <input style="margin-bottom: 10px; width: 30%;" type="reset" class="b2" value="Limpiar" />
+        <button type="button" class="b2" (click)="obtenerPasaje()">
+          Listar
+        </button>
+
+      </div>
+    </form>
+
+    <br>
+    <h2 class="a2">Adelantos</h2>
+    <table style="
+    background-color: rgb(153, 255, 0);
+    color: rgb(44, 44, 255);
+    border-color: rgb(11, 37, 0);
+  " class="table table-striped col-sm-12" [mfData]="adelantos" #mf="mfDataTable" [mfRowsOnPage]="5">
+      <thead>
+        <tr>
+
+          <th style="width: 20%;">
+            <input type="text" class="form-control" name="fechaAdelanto" #fechaAdelanto="ngModel"
+              placeholder="Ingrese Fecha" bsDatepicker [(ngModel)]="adelanto.fecha" />
+            <div *ngIf="fechaAdelanto.invalid && (fechaAdelanto.dirty || fechaAdelanto.touched)"
+              class="alertalert-danger">
+
+              <div *ngIf="fechaAdelanto.errors.required">
+                Fecha es requerido.
+              </div>
+
+
+            </div>
+          </th>
+          <th style="width: 25%;">
+            <input type="text" class="form-control" name="cobrador" #cobrador="ngModel" placeholder="Ingrese Cobrador"
+              [(ngModel)]="adelanto.cobrador" />
+            <div *ngIf="cobrador.invalid && (cobrador.dirty || cobrador.touched)" class="alertalert-danger">
+
+              <div *ngIf="cobrador.errors.required">
+                cobrador es requerido.
+              </div>
+
+
+            </div>
+          </th>
+          <th style="width: 25%;">
+            <input type="number" class="form-control" name="monto" #monto="ngModel" placeholder="Ingrese Monto"
+              [(ngModel)]="adelanto.montoAdelanto" />
+            <div *ngIf="monto.invalid && (monto.dirty || monto.touched)" class="alertalert-danger">
+
+              <div *ngIf="monto.errors.required">
+                monto es requerido.
+              </div>
+
+
+            </div>
+          </th>
+          <th style="width: 25%;">
+            <button class="b2" style="width: 50%;" (click)="guardarAdelanto()">
+              Agregar
+            </button>
+          </th>
+
+
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of pasaje.adelanto">
+          <td>{{ item.fecha | date: "shortDate"}}</td>
+          <td>{{ item.cobrador }}</td>
+          <td>{{ item.montoAdelanto  | currency: "USD" }}</td>
+          <td>
+
+            <button class="b2" style="width: 50%;" (click)="eliminarAdelanto(item)">
+              Borrar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td>
+            <mfBootstrapPaginator></mfBootstrapPaginator>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+  <br />
+  <table style="
+      background-color: rgb(153, 255, 0);
+      color: rgb(44, 44, 255);
+      border-color: rgb(11, 37, 0);
+    " class="table table-striped col-sm-12" [mfData]="pasajes" #mf="mfDataTable" [mfRowsOnPage]="5">
+    <thead>
+      <tr>
+        <th style="width: 8%;">
+          <mfDefaultSorter> Dni </mfDefaultSorter>
+        </th>
+        <th style="width: 15%;">
+          Categoria
+        </th>
+        <th style="width: 20%;">
+          Fecha de Compra
+        </th>
+        <th style="width: 15%;">
+          Precio sin descuento
+        </th>
+        <th style="width: 20%;">
+          Precio con descuento
+        </th>
+        <th style="width: 30%; padding-left: 70px;">
+          Acciones
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of pasajes">
+        <td>{{ item.dniPasajero }}</td>
+        <td>{{ item.categoriaPasajero }}</td>
+        <td>{{ item.fechaCompra | date: "shortDate" }}</td>
+        <td>{{ item.precioPasaje | currency: "USD" }}</td>
+        <td>{{ item.final | currency: "USD" }}</td>
+        <td>
+          <button class="b2" style="width: 50%;" (click)="elegirPasaje(item)">
+            Seleccion
+          </button>
+          <button class="b2" style="width: 50%;" (click)="borrarPasaje(item)">
+            Borrar
+          </button>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td>
+          <mfBootstrapPaginator></mfBootstrapPaginator>
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+<link rel="stylesheet" href="https://unpkg.com/ngx-bootstrap/datepicker/bs-datepicker.css" />
